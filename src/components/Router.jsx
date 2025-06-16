@@ -3,7 +3,6 @@ import RoomList from '../pages/RoomList'
 // import Signup from '../pages/Signup'
 import Login from '../pages/LogIn';
 import CartList from '../pages/CartList';
-import AddRoom from "../pages/AddRoom"
 import RoomDescription from '../components/RoomDescription';
 import OrderCompletion from "../pages/OrderCompletion";
 import EditRoom from "../pages/Admin"

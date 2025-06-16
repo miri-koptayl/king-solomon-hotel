@@ -17,6 +17,7 @@
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.7",
     "@react-email/render": "^1.0.6",
+    "@reduxjs/toolkit": "^2.8.2",
     "emailjs-com": "^3.2.0",
     "i18next": "^25.0.1",
     "nodemailer": "^6.10.1",

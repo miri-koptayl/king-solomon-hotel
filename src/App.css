@@ -1,0 +1,22 @@
+body{
+text-align: center;
+align-items: center;
+font-family: Arial, Helvetica, sans-serif;
+}
+.list_room {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-between; /* מרווחים בין הכרטיסים */
+  gap: 10px; /* רווחים בין הכרטיסים */
+}
+
+.list_room .room_card {
+  width: calc(10.33% - 10px); /* 3 בשורה עם מרווחים */
+}
+.cart_room{
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-between; /* מרווחים בין הכרטיסים */
+  gap: 10px; /* רווחים בין הכרטיסים */
+}
+

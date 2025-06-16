@@ -1,0 +1,24 @@
+.cart-container {
+  position: fixed;
+  top: 96px; /* מתחת ל־Navbar */
+  right: 0; /* בצד ימין */
+  width: 25%;
+  height: calc(100vh - 96px); /* לא לעבור את ה־Navbar */
+  background-color: #f5e2b8;
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 1200;
+  overflow-y: auto;
+  transform: translateX(100%); /* מוסתר בהתחלה */
+  transition: transform 0.5s ease-in-out;
+  direction: rtl;
+}
+
+.cart-container.open {
+  transform: translateX(0); /* מופיע */
+}
+
+/* שאר העיצוב (כותרות, פסקאות, רשימות וכו') נשאר אותו דבר */

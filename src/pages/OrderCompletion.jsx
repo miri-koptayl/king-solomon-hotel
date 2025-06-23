@@ -7,19 +7,19 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { httpAddInvitation } from "../api/InvitationService";
-import emailjs from 'emailjs-com';
+import emailjs from "emailjs-com";
 
 const OrderCompletion = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.currentUser);
     const Rooms = useSelector((state) => state.cart.arrRooms);
-    const [IsOrder, setIsOrder] = useState(false);
     const finalPrice = useSelector((state) => state.cart.SumRooms);
+    const [IsOrder, setIsOrder] = useState(false);
 
     const name = user?.username || "";
     const email = user?.email || "";
-
+    console.log(user.email)
     useEffect(() => {
         if (!user) navigate("/Login");
     }, [user, navigate]);
@@ -34,14 +34,13 @@ const OrderCompletion = () => {
     useEffect(() => {
         reset({
             userName: name,
-            EmailAddress: email,
             number: "",
             ThreeDigits: "",
             validity: "",
             startDate: "",
-            endDate: ""
+            endDate: "",
         });
-    }, [name, email, reset]);
+    }, [name, reset]);
 
     const createInvitation = (data) => {
         const invitationData = {
@@ -58,47 +57,44 @@ const OrderCompletion = () => {
             },
         };
 
-        const sendOrderEmail = (invitationData) => {
-            if (!invitationData.userName) {
-                console.error("Missing user name for email!");
-                return;
-            }
-
-            const roomListHtml = invitationData.orderRooms.map(room => {
-                const roomName = room.roomCategories?.[0] || 'חדר';
+        const roomListHtml = invitationData.orderRooms
+            .map((room) => {
+                const roomName = room.roomCategories?.[0] || "חדר";
                 return `
-                  <tr>
-                    <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
-                      <img src="${room.imagePath}" alt="${roomName}" style="width: 100px; height: auto; border-radius: 8px;" />
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">${roomName}</td>
-                    <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">${room.price} ₪</td>
-                    <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">${room.qty}</td>
-                  </tr>
-                `;
-            }).join('');
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
+              <img src="${room.imagePath}" alt="${roomName}" style="width: 100px; height: auto; border-radius: 8px;" />
+            </td>
+            <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">${roomName}</td>
+            <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">${room.price} ₪</td>
+            <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">${room.qty}</td>
+          </tr>
+        `;
+            })
+            .join("");
 
-            emailjs.send(
-                'service_haj0n8z',
-                'template_mguhhnj',
+        emailjs
+            .send(
+                "service_haj0n8z",
+                "template_mguhhnj",
                 {
                     name: invitationData.userName,
                     email: invitationData.EmailAddress,
                     finalPrice: finalPrice,
-                    roomListHtml: roomListHtml
+                    roomListHtml: roomListHtml,
                 },
-                'A2OaW7uwax719G291'
-            ).then((result) => {
-                console.log('Email sent!', result.text);
-            }).catch((error) => {
-                console.error('Email send failed:', error);
+                "A2OaW7uwax719G291"
+            )
+            .then(() => {
+                console.log("Email sent successfully!");
+            })
+            .catch((error) => {
+                console.error("Email send failed:", error);
             });
-        };
 
         httpAddInvitation(invitationData)
             .then(() => {
                 dispatch(EmptyingTheBasket());
-                sendOrderEmail(invitationData);
                 setIsOrder(true);
             })
             .catch((err) => {
@@ -133,8 +129,10 @@ const OrderCompletion = () => {
                                         fontSize: "3rem",
                                     }}
                                 >
-                                    מלאו את פרטיכם<br />
-                                    ואתם בדרך לחופשה<br />
+                                    מלאו את פרטיכם
+                                    <br />
+                                    ואתם בדרך לחופשה
+                                    <br />
                                     ברמה שעוד לא הכרתם!
                                 </Typography>
                             </Box>
@@ -151,20 +149,18 @@ const OrderCompletion = () => {
                                         fullWidth
                                         margin="normal"
                                         label="שם משתמש"
-                                        {...register("userName", { required: "נא להכניס שם" })}
-                                        error={!!errors.userName}
-                                        helperText={errors.userName?.message}
+                                        value={name}
                                         disabled
                                     />
+
                                     <TextField
                                         fullWidth
                                         margin="normal"
                                         label="מייל - לכאן תשלח קבלה"
-                                        type="email"
-                                        {...register("EmailAddress", { required: "נא להכניס מייל" })}
-                                        error={!!errors.EmailAddress}
-                                        helperText={errors.EmailAddress?.message}
+                                        value={email}
+                                        disabled
                                     />
+
 
                                     <Typography variant="h6" gutterBottom fontWeight="bold" mt={4}>
                                         בחירת תאריכים
@@ -201,13 +197,25 @@ const OrderCompletion = () => {
                                         </Typography>
                                         <Grid container spacing={2} alignItems="center">
                                             <Grid item>
-                                                <img src="https://www.freepnglogos.com/uploads/visa-logo-png-image-4.png" alt="Visa" width={50} />
+                                                <img
+                                                    src="https://www.freepnglogos.com/uploads/visa-logo-png-image-4.png"
+                                                    alt="Visa"
+                                                    width={50}
+                                                />
                                             </Grid>
                                             <Grid item>
-                                                <img src="https://pngimg.com/d/mastercard_PNG16.png" alt="MasterCard" width={50} />
+                                                <img
+                                                    src="https://pngimg.com/d/mastercard_PNG16.png"
+                                                    alt="MasterCard"
+                                                    width={50}
+                                                />
                                             </Grid>
                                             <Grid item>
-                                                <img src="https://www.svgrepo.com/show/328113/amex.svg" alt="Amex" width={50} />
+                                                <img
+                                                    src="https://www.svgrepo.com/show/328113/amex.svg"
+                                                    alt="Amex"
+                                                    width={50}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </Box>
@@ -246,9 +254,7 @@ const OrderCompletion = () => {
                                                 fullWidth
                                                 label="תוקף כרטיס"
                                                 type="month"
-                                                {...register("validity", {
-                                                    required: "נא להזין תוקף",
-                                                })}
+                                                {...register("validity", { required: "נא להזין תוקף" })}
                                                 error={!!errors.validity}
                                                 helperText={errors.validity?.message}
                                             />
@@ -280,7 +286,8 @@ const OrderCompletion = () => {
             ) : (
                 <h1>
                     ❤️ ההזמנה בוצעה בהצלחה
-                    <br /><br />
+                    <br />
+                    <br />
                     קבלה נשלחה למייל
                 </h1>
             )}
